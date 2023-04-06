@@ -1,0 +1,25 @@
+.body {
+    min-height: calc(100% - 58px);
+    height: calc(100% - 58px);
+
+    .main {
+        padding-left: 20%;
+
+        .action {
+            position: absolute;
+            top: 0;
+            left: 60%;
+            transform: translate(-60%);
+            text-align: center;
+
+            button {
+                border: 1px solid #000;
+                background: #ccc;
+            }
+        }
+    }
+
+    footer {
+        min-height: 160px;
+    }
+}
