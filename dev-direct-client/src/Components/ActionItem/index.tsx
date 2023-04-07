@@ -1,12 +1,13 @@
 import { useDispatch } from "react-redux";
-import { ElementTypes } from "../../constant";
+import { ElementTypes, Mode } from "../../constant";
 import { setCurrentElement } from "../../Reducers";
 import { IElement } from "../../types";
 
-type ActionItemType = {
+type ActionItemPropsType = {
   item: IElement;
+  mode: Mode;
 };
-export const ActionItem = ({ item }: ActionItemType) => {
+export const ActionItem = ({ item, mode }: ActionItemPropsType) => {
   const dispatch = useDispatch();
 
   return (
@@ -15,10 +16,12 @@ export const ActionItem = ({ item }: ActionItemType) => {
         <button
           className="p-1"
           onClick={() => {
-            dispatch(setCurrentElement(item));
+            mode === Mode.ADMIN
+              ? dispatch(setCurrentElement(item))
+              : alert(item.props.message);
           }}
         >
-          {item.props.text ? item.props.text : ElementTypes.BUTTON}
+          {item.props?.text ? item.props.text : ElementTypes.BUTTON}
         </button>
       ) : (
         <p
@@ -26,7 +29,7 @@ export const ActionItem = ({ item }: ActionItemType) => {
             dispatch(setCurrentElement(item));
           }}
         >
-          {item.props.message ? item.props.message : ElementTypes.PARAGRAPH}
+          {item.props?.message ? item.props.message : ElementTypes.PARAGRAPH}
         </p>
       )}
     </div>

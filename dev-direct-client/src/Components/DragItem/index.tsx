@@ -1,8 +1,5 @@
 import { useDrag } from "react-dnd";
-import { useDispatch } from "react-redux";
-import { createUUID } from "../../utils";
 import { ElementTypes } from "../../constant";
-import { setCurrentElement } from "../../Reducers";
 
 type DragItemPropsType = {
   type: string;
@@ -12,10 +9,7 @@ type DragItemPropsType = {
 export const DragItem = ({ type, text, elementType }: DragItemPropsType) => {
   const item = {
     component: elementType,
-    props: {
-      text: "",
-      message: "",
-    },
+    props: {},
   };
   const [{ isDragging }, drag] = useDrag(
     () => ({

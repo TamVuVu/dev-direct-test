@@ -1,17 +1,19 @@
 import { ActionItem, NavBar } from "../../Components";
 import { useDrop } from "react-dnd";
-import { ElementTypes, ItemTypes } from "../../constant";
+import { ElementTypes, ItemTypes, Mode } from "../../constant";
 
 import "./index.scss";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addInstances, changeProps, setDragging } from "../../Reducers";
-import { IElement } from "../../types";
+import { useSelector } from "react-redux";
+import { addInstance, changeProps, setDragging } from "../../Reducers";
+import { bulkCreateElements, getElements } from "../../Api";
+import { useAppDispatch } from "../../hooks";
+import { Link } from "react-router-dom";
 export const AdminPage = () => {
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
   const { config } = useSelector((state: any) => state);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [, drop] = useDrop(
     () => ({
       accept: ItemTypes.DRAG_ITEM,
@@ -20,7 +22,7 @@ export const AdminPage = () => {
       },
       drop: (e) => {
         dispatch(setDragging(""));
-        dispatch(addInstances(e));
+        dispatch(addInstance(e));
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
@@ -28,20 +30,6 @@ export const AdminPage = () => {
     }),
     [config.dragging]
   );
-
-  const renderConfig = (element: IElement) => {
-    if (element.component === ElementTypes.PARAGRAPH) {
-      const config = {
-        id: element.id,
-        component: element.component,
-        props: {
-          message: element.props.message,
-        },
-      };
-      return config;
-    }
-    return element;
-  };
 
   useEffect(() => {
     document.addEventListener("mousemove", (e) => {
@@ -51,13 +39,17 @@ export const AdminPage = () => {
     return;
   }, []);
 
+  useEffect(() => {
+    dispatch(getElements() as any);
+  }, []);
+
   return (
     <div ref={drop} className="h-screen">
       <header className="p-3 border-b-2">
         <nav className="flex justify-center gap-3">
           <button
             className="p-1 bg-red-500 text-white"
-            onClick={() => console.log(config.elements)}
+            onClick={() => dispatch(bulkCreateElements(config.elements) as any)}
           >
             Save
           </button>
@@ -65,7 +57,9 @@ export const AdminPage = () => {
           <button className="p-1 bg-red-500 text-white">Redo</button>
           <button className="p-1 bg-red-500 text-white">Export</button>
           <button className="p-1 bg-red-500 text-white">Import</button>
-          <button className="p-1 bg-red-500 text-white">View</button>
+          <Link to="/consumers" target="_blank">
+            <button className="p-1 bg-red-500 text-white">View</button>
+          </Link>
         </nav>
       </header>
       <div className="body relative left-1/5" id="main">
@@ -81,13 +75,14 @@ export const AdminPage = () => {
               Config:{" "}
               {config.currentIndex >= 0 &&
                 JSON.stringify(
-                  renderConfig(config.elements[config.currentIndex])
+                  // renderConfig(config.elements[config.currentIndex])
+                  config.elements[config.currentIndex]
                 )}
             </p>
           </div>
           <div className="action">
             {config.elements.map((item: any) => (
-              <ActionItem key={item.id} item={item} />
+              <ActionItem key={item.id} item={item} mode={Mode.ADMIN} />
             ))}
           </div>
           <footer className="p-3 border-t-2 absolute bottom-0 w-4/5">
@@ -99,7 +94,11 @@ export const AdminPage = () => {
                   <br />
                   <input
                     placeholder=""
-                    value={config.elements[config.currentIndex]?.props?.text}
+                    value={
+                      config.elements[config.currentIndex]?.props?.text
+                        ? config.elements[config.currentIndex]?.props?.text
+                        : ""
+                    }
                     onChange={(e) =>
                       dispatch(changeProps(["text", e.target.value]))
                     }
@@ -109,7 +108,11 @@ export const AdminPage = () => {
                   <label>Alert Message</label>
                   <br />
                   <input
-                    value={config.elements[config.currentIndex]?.props?.message}
+                    value={
+                      config.elements[config.currentIndex]?.props?.message
+                        ? config.elements[config.currentIndex]?.props?.message
+                        : ""
+                    }
                     onChange={(e) =>
                       dispatch(changeProps(["message", e.target.value]))
                     }
@@ -122,7 +125,11 @@ export const AdminPage = () => {
                   <br />
                   <input
                     className="border border-width-1 border-solid border-black"
-                    value={config.elements[config.currentIndex]?.props?.message}
+                    value={
+                      config.elements[config.currentIndex]?.props?.message
+                        ? config.elements[config.currentIndex]?.props?.message
+                        : ""
+                    }
                     onChange={(e) =>
                       dispatch(changeProps(["message", e.target.value]))
                     }

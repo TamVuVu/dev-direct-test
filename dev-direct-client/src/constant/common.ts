@@ -3,6 +3,11 @@ export const ItemTypes = {
 };
 
 export enum ElementTypes {
-  PARAGRAPH = "PARAGRAPH",
-  BUTTON = "BUTTON",
+  PARAGRAPH = "Paragraph",
+  BUTTON = "Button",
+}
+
+export enum Mode {
+  ADMIN = "ADMIN",
+  CONSUMER = "CONSUMER",
 }

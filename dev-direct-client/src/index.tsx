@@ -4,12 +4,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import store from "./Store";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AdminPage } from "./Pages/Admin";
 import { ConsumerPage } from "./Pages/Consumers";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import { store } from "./Store";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

@@ -11,11 +11,14 @@ export const configSlice = createSlice({
     elements: [] as IElement[],
   },
   reducers: {
-    addInstances: (state, action) => {
+    addInstance: (state, action) => {
       const payload = {
         id: createUUID(),
       };
       state.elements = [...state.elements, { ...payload, ...action.payload }];
+    },
+    setMultiInstances: (state, action) => {
+      state.elements = [...state.elements, ...action.payload];
     },
     setDragging: (state, action) => {
       state.dragging = action.payload;
@@ -34,5 +37,10 @@ export const configSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setDragging, addInstances, setCurrentElement, changeProps } =
-  configSlice.actions;
+export const {
+  setDragging,
+  addInstance,
+  setMultiInstances,
+  setCurrentElement,
+  changeProps,
+} = configSlice.actions;
