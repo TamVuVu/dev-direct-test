@@ -11,6 +11,7 @@ import { ConfigModule } from './modules/config/config.module';
       dialect: 'mysql',
       host: 'localhost',
       port: 3306,
+      //Replace your username and password here
       username: 'root',
       password: '123456',
       database: 'dev_direct',
