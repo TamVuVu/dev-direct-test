@@ -5,7 +5,7 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <Navigate to="/consumers" replace={true} />
+      <Navigate to="/admin" replace={true} />
     </div>
   );
 }

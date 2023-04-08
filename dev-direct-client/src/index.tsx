@@ -27,6 +27,10 @@ const router = createBrowserRouter([
     path: "/consumers",
     element: <ConsumerPage />,
   },
+  {
+    path: "*",
+    element: <h1>404 NOT FOUND</h1>,
+  },
 ]);
 
 root.render(
